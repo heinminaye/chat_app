@@ -1,9 +1,11 @@
+import 'package:chat_app/home.dart';
 import 'package:flutter/material.dart';
 import 'sing_up.dart';
 import 'sing_up.dart';
 import 'sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
+import 'main.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -20,10 +22,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? '/' : '/homePage',
       routes: {
         '/signIn': (context) => const SignIn(),
         '/signUp': (context) => const SignUp(),
+        '/homePage': (context) => const MyWidget()
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -43,6 +47,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void checkLogin() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('user sign out!');
+      } else {
+        Navigator.pushReplacementNamed(context, '/homePage');
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    checkLogin();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               child: const Text(
-                "SWITCH ACCOUNT",
+                "CREATE ACCOUNT",
               ),
             )
           ],

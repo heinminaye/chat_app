@@ -25,6 +25,7 @@ class _SignInState extends State<SignIn> {
 
         UserCredential currentUser = await _auth.signInWithEmailAndPassword(
             email: usernameController.text, password: passwordController.text);
+        Navigator.pushReplacementNamed(context, '/homePage');
       } catch (e) {
         var snackBar = SnackBar(
           duration: const Duration(milliseconds: 1500),
@@ -71,7 +72,7 @@ class _SignInState extends State<SignIn> {
                   IconButton(
                     splashRadius: 20,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, '/');
                     },
                     icon: const Icon(
                       Icons.arrow_back,
@@ -94,13 +95,26 @@ class _SignInState extends State<SignIn> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                Image.asset(
-                  'images/messenger.png',
-                  scale: 1,
-                  width: 80,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                        width: 120,
+                        child: const Text(
+                          "SIGN IN",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        )),
+                    Image.asset(
+                      'images/messenger.png',
+                      scale: 1,
+                      width: 80,
+                    ),
+                  ],
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 60,
                 ),
                 TextField(
                   controller: usernameController,
@@ -197,7 +211,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signUp');
+                        Navigator.pushReplacementNamed(context, '/signUp');
                       },
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(
